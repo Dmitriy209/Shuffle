@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Shuffle
 {
@@ -7,50 +7,111 @@ namespace Shuffle
         static void Main(string[] args)
         {
             const string ButtonExit = "exit";
+            const string ButtonShuffleCards = "shufflecards";
 
             bool isRunning = true;
 
             while (isRunning)
             {
-                Console.WriteLine($"Введите {ButtonExit}, чтобы выйти или что-нибудь ещё.");
+                Console.WriteLine($"Введите {ButtonExit}, чтобы выйти.\n" +
+                    $"Введите {ButtonShuffleCards}, чтобы перемешать колоду карт.\n" +
+                    $"Введите что угодно, чтобы получилась белиберда.");
                 string userInput = Console.ReadLine();
+
+                Console.Clear();
 
                 switch (userInput)
                 {
                     case ButtonExit:
                         isRunning = false;
                         break;
+
+                    case ButtonShuffleCards:
+                        ShuffleCards();
+                        break;
+
                     default:
-                        char[] userInputMix = Shuffle(userInput);
-
-
+                        Shuffle(MakeArrayLine(userInput));
                         break;
                 }
             }
+
+            Console.Clear();
+            Console.WriteLine("Вы вышли из программы.");
         }
 
-        static char[] Shuffle(string line)
+        static void Shuffle(char[] symbols)
         {
             Random random = new Random();
 
             int minLimitRandom = 0;
-            int maxLimitRandom = line.Length;
+            int maxLimitRandom = symbols.Length;
 
-            char[] lineMix = new char[line.Length];
+            char tempElement;
 
-            for (int i = 0; i < line.Length; i++)
+            for (int i = 0; i < symbols.Length; i++)
             {
-                int indexMix = random.Next(minLimitRandom, maxLimitRandom);
-                int char symbolMix = ;
+                int indexRandom = random.Next(minLimitRandom, maxLimitRandom);
 
-                lineMix[indexMix] = line[i];
+                tempElement = symbols[i];
+                symbols[i] = symbols[indexRandom];
+                symbols[indexRandom] = tempElement;
             }
 
-                
+            Console.WriteLine("Получилась белиберда:");
+            Console.WriteLine();
 
-            
+            foreach (char symbol in symbols)
+                Console.Write(symbol);
 
-            return lineMix;
+            Console.WriteLine();
+        }
+
+        static void ShuffleCards()
+        {
+            string[] cards = { "J", "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "Q", "K", "A" };
+
+            Console.WriteLine($"Изначальная колода:");
+            ShowDeck(cards);
+
+            Random random = new Random();
+
+            int minLimitRandom = 0;
+            int maxLimitRandom = cards.Length;
+
+            string tempElement;
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                int indexRandom = random.Next(minLimitRandom, maxLimitRandom);
+
+                tempElement = cards[i];
+                cards[i] = cards[indexRandom];
+                cards[indexRandom] = tempElement;
+            }
+
+            Console.WriteLine("Ваша колода, сэр.");
+            ShowDeck(cards);
+        }
+
+        static char[] MakeArrayLine(string line)
+        {
+            char[] arrayLine = new char[line.Length];
+
+            for (int i = 0; i < line.Length; i++)
+                arrayLine[i] = line[i];
+
+            return arrayLine;
+        }
+
+        static void ShowDeck(string[] deck)
+        {
+            string space = " ";
+
+            foreach (string card in deck)
+                Console.Write(card + space);
+
+            Console.WriteLine();
         }
     }
 }
