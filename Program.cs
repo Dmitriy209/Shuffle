@@ -102,13 +102,5 @@ namespace Shuffle
 
             Console.WriteLine();
         }
-
-        static void TRAPSHOWARRAY<T>(T array, string separator = "")
-        {
-            foreach (T element in array)
-                Console.Write(element + separator);
-
-            Console.WriteLine();
-        }
     }
 }
