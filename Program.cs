@@ -11,6 +11,8 @@ namespace Shuffle
 
             bool isRunning = true;
 
+            string[] cards = { "J", "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "Q", "K", "A" };
+
             while (isRunning)
             {
                 Console.WriteLine($"Введите {ButtonExit}, чтобы выйти.\n" +
@@ -27,11 +29,11 @@ namespace Shuffle
                         break;
 
                     case ButtonShuffleCards:
-                        ShuffleCards();
+                        ShuffleCards(cards);
                         break;
 
                     default:
-                        Shuffle(MakeArrayLine(userInput));
+                        ShuffleLine(MakeArrayLine(userInput));
                         break;
                 }
             }
@@ -40,14 +42,14 @@ namespace Shuffle
             Console.WriteLine("Вы вышли из программы.");
         }
 
-        static void Shuffle(char[] symbols)
+        static string[] Shuffle(string[] symbols)
         {
             Random random = new Random();
 
             int minLimitRandom = 0;
             int maxLimitRandom = symbols.Length;
 
-            char tempElement;
+            string tempElement;
 
             for (int i = 0; i < symbols.Length; i++)
             {
@@ -58,58 +60,53 @@ namespace Shuffle
                 symbols[indexRandom] = tempElement;
             }
 
-            Console.WriteLine("Получилась белиберда:");
-            Console.WriteLine();
-
-            foreach (char symbol in symbols)
-                Console.Write(symbol);
-
-            Console.WriteLine();
+            return symbols;
         }
 
-        static void ShuffleCards()
+        static void ShuffleLine(string[] line)
         {
-            string[] cards = { "J", "2", "3", "4", "5", "6", "7", "8", "9", "10", "V", "Q", "K", "A" };
+            line = Shuffle(line);
+
+            Console.WriteLine("Получилась белиберда:");
+
+            ShowArray(line);
+        }
+
+        static void ShuffleCards(string[] cards)
+        {
+            string space = " ";
 
             Console.WriteLine($"Изначальная колода:");
-            ShowDeck(cards);
+            ShowArray(cards, space);
 
-            Random random = new Random();
-
-            int minLimitRandom = 0;
-            int maxLimitRandom = cards.Length;
-
-            string tempElement;
-
-            for (int i = 0; i < cards.Length; i++)
-            {
-                int indexRandom = random.Next(minLimitRandom, maxLimitRandom);
-
-                tempElement = cards[i];
-                cards[i] = cards[indexRandom];
-                cards[indexRandom] = tempElement;
-            }
+            cards = Shuffle(cards);
 
             Console.WriteLine("Ваша колода, сэр.");
-            ShowDeck(cards);
+            ShowArray(cards, space);
         }
 
-        static char[] MakeArrayLine(string line)
+        static string[] MakeArrayLine(string line)
         {
-            char[] arrayLine = new char[line.Length];
+            string[] arrayLine = new string[line.Length];
 
             for (int i = 0; i < line.Length; i++)
-                arrayLine[i] = line[i];
+                arrayLine[i] = Convert.ToString(line[i]);
 
             return arrayLine;
         }
 
-        static void ShowDeck(string[] deck)
+        static void ShowArray(string[] array, string separator = "")
         {
-            string space = " ";
+            foreach (string element in array)
+                Console.Write(element + separator);
 
-            foreach (string card in deck)
-                Console.Write(card + space);
+            Console.WriteLine();
+        }
+
+        static void TRAPSHOWARRAY<T>(T array, string separator = "")
+        {
+            foreach (T element in array)
+                Console.Write(element + separator);
 
             Console.WriteLine();
         }
