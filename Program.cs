@@ -16,8 +16,7 @@ namespace Shuffle
             while (isRunning)
             {
                 Console.WriteLine($"Введите {ButtonExit}, чтобы выйти.\n" +
-                    $"Введите {ButtonShuffleCards}, чтобы перемешать колоду карт.\n" +
-                    $"Введите что угодно, чтобы получилась белиберда.");
+                    $"Или что угодно, чтобы перемешать колоду карт.\n");
                 string userInput = Console.ReadLine();
 
                 Console.Clear();
@@ -28,12 +27,8 @@ namespace Shuffle
                         isRunning = false;
                         break;
 
-                    case ButtonShuffleCards:
-                        ShuffleCards(cards);
-                        break;
-
                     default:
-                        ShuffleLine(MakeArrayLine(userInput));
+                        ShuffleCards(cards);
                         break;
                 }
             }
@@ -63,36 +58,22 @@ namespace Shuffle
             return symbols;
         }
 
-        static void ShuffleLine(string[] line)
-        {
-            line = Shuffle(line);
-
-            Console.WriteLine("Получилась белиберда:");
-
-            ShowArray(line);
-        }
-
         static void ShuffleCards(string[] cards)
         {
             string space = " ";
 
+            string[] cardsMix = new string[cards.Length];
+
+            for (int i = 0; i < cards.Length; i++)
+                cardsMix[i] = cards[i];
+
             Console.WriteLine($"Изначальная колода:");
             ShowArray(cards, space);
 
-            cards = Shuffle(cards);
+            cardsMix = Shuffle(cardsMix);
 
             Console.WriteLine("Ваша колода, сэр.");
-            ShowArray(cards, space);
-        }
-
-        static string[] MakeArrayLine(string line)
-        {
-            string[] arrayLine = new string[line.Length];
-
-            for (int i = 0; i < line.Length; i++)
-                arrayLine[i] = Convert.ToString(line[i]);
-
-            return arrayLine;
+            ShowArray(cardsMix, space);
         }
 
         static void ShowArray(string[] array, string separator = "")
